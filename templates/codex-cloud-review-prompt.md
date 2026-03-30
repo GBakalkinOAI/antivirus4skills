@@ -1,37 +1,40 @@
-# Codex Cloud Review Prompt (Template)
-
-Use this template to request a max-paranoia static review of exactly one external repo.
-
-```markdown
 You are reviewing one external skills/plugins repository in **max paranoia** mode.
 
 Scope:
-- Review only this repository: <REVIEWED_REPO_URL>
-- Source/upstream repo (if different): <SOURCE_REPO_URL>
-- Version to review: <COMMIT_SHA_OR_TAG>
+- This is fork of repo: SOURCE_REPO_URL = 
+- Version to review: COMMIT_SHA_OR_TAG = 
+- If user forgot to fill is scope, complain and stop.
 
 Hard constraints:
 - Static analysis only; do not execute untrusted code.
 - Do not propose automated execution pipelines.
-- Produce Markdown output only.
+- Produce exactly two Markdown output files: `<SOURCE_REPO>-codex-issues.md` and `<SOURCE_REPO>-codex-overview.md`.
 - Do not pre-fill or infer Pass/Maybe/Fail; leave final decision as human-only `undecided` placeholder.
 
-Required outputs:
-1) Review metadata (reviewed repo, source repo, exact version pin, reviewer/date placeholders).
-2) Suspicious findings list with:
+Required outputs in `<SOURCE_REPO>-codex-issues.md`:
+1) Review metadata, to place once in the beginning of the file
+   - <SOURCE_REPO_URL>, version <COMMIT_SHA_OR_TAG>
+   - Reviewed: <YYYY-MM-DD> Daniil Sarkisyan
+2) For each suspicious finding output:
    - exact file path
    - short snippet
    - reason
+   - follow-up actions required before trust
    - severity (Critical/High/Medium/Low)
    - confidence (High/Medium/Low)
-   - manual verification notes
-3) Human-only decision placeholder section (`undecided` by default; no Codex inference).
-4) Follow-up actions required before trust.
-5) If safe enough to overview, draft a grouped manifest of skills by function and add keyword tags.
+   - decision: undecided (Human-only placeholder, no Codex inference)
+   - verification notes (empty placeholder, no Codex inference)
+
+Required outputs in `<SOURCE_REPO>-codex-overview.md`:
+1) Review metadata, to place once in the beginning of the file
+   - <SOURCE_REPO_URL>, version <COMMIT_SHA_OR_TAG>
+   - Reviewed: <YYYY-MM-DD> Daniil Sarkisyan
+2) For each skill output:
+   - name
+   - overview
+   - list of tags/keywords
+3) Group skills into sections according to the tasks they solve.
 
 Method guidance:
 - Be conservative; include ambiguous items as findings for manual review.
-- Reuse historical suspicious patterns and prior decisions when available.
-- Treat decision as valid only for the exact pinned version.
 - Avoid false positives for ordinary use of well-curated standard tools/packages; flag only suspicious invocation context.
-```
