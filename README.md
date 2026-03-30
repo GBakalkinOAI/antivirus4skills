@@ -8,7 +8,7 @@ I instruct Codex Cloud to
 
 # Simplified workflow (see `REVIEW_WORKFLOW.md` for details)
 - Fork skills repo so Codex's GitHub connector will use it (and reliably freeze the repo's version, so no silent updates could slip unreviewed).
-- Run Codex Cloud in forked repo by pasting the prompt from `templates/prompt-review-repo.md`.
+- Run Codex Cloud in forked repo by pasting the self-contained prompt from `templates/prompt-review-repo.md` 
 - Codex generates `<SOURCE_REPO>-codex-issues.md`, the single file aggregating all suspicious issues from all skills of that repo plus flags other problems, like installation scripts doing something unexpected.
 - Copy generated files to this repo, run Codex Cloud with `templates/prompt-guess-similar.md` to pre-fill decisions for the same or highly similar issues we met before in old versions of this repo or in other repos.
 - Manually curate remaining issues and sanity-check Codex's pre-filled decisions.
