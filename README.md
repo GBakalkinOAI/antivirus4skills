@@ -1,9 +1,20 @@
 # antivirus4skills
 I want to inspect skills and plugins for bad things before trusting Codex CLI to use them on my local server.
-So I would like to instruct Codex Cloud to 
-- read through the skills collected in a public repo in "max paranoia" mode
+I instruct Codex Cloud to 
+- read through the skills collected in several high profile public repo in "max paranoia" mode
 - show me all the suspicious places so I can re-check manually
-- using just the "good" skills make a manifest that will aggregate skill descriptions in one place (for me glance to remember which skill does what), grouping skills into sections by what they do and tagging them for quick keyword search latter
+- remember what I checked "Pass" so next time I do not have to re-check the same or highly similar issue
+- for each repo make a single manifest overviewing all skills that "Pass", grouping skills into sections by what they do and tagging them for quick keyword search - one place to preselect safe/good skills for my other Codex projects
+
+# Simplified workflow (see `REVIEW_WORKFLOW.md` for details)
+- Fork skills repo so Codex's GitHub connector will let me use it (and reliably freeze the repo's version, so no silent updates could slip unreviewed)
+- Run Codex Cloud in forked repo by pasting the prompt from `templates/prompt-review-repo.md`
+- Codex generates `repo-issues.md` the single file aggregating all suspicious issues from all skills of that repo plus flags other problems, like installation scripts doing something unexpected 
+- Copy&rename `repo-issues.md` to this repo, run Codex Cloud with `templates/prompt-guess-similar.md` to pre-fill decisions for the same or highly similar issues we met before in old versions of this repo or in other repos
+- Manually curate remaining issues and sanity-check Codex's pre-filled decisions
+- run Codex Cloud on manually curated decisions to get three files: overview of all safe skills in this repo, overview of unresolved issues, clearly malicious/dangerous stuff with human readable explanations (to notify the original skill repo's maintainer)
+
+# Repos to review
 
 ## openai/skills
 This is the safest place to start. I do not expect any bad stuff there, so I will just debug manifest creation
@@ -20,5 +31,5 @@ OpenClaw ... gives me mixed excitement/greed and fear. I am not ready to let the
 ## ClawBio/ClawBio
 same greed and fear
 
-## Disclaimer
+# Disclaimer
 I am just learning Codex, so do not expect much yet.
