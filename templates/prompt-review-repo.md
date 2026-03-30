@@ -14,7 +14,7 @@ Hard constraints:
 Required outputs in `<SOURCE_REPO>-codex-issues.md`:
 1) Review metadata, to place once in the beginning of the file
    - <SOURCE_REPO_URL>, version <COMMIT_SHA_OR_TAG>
-   - Reviewed: <YYYY-MM-DD> Daniil Sarkisyan
+   - Reviewed: <Year-Month-Date> Daniil Sarkisyan
 2) For each suspicious finding output:
    - exact file path
    - short snippet
@@ -28,7 +28,7 @@ Required outputs in `<SOURCE_REPO>-codex-issues.md`:
 Required outputs in `<SOURCE_REPO>-codex-overview.md`:
 1) Review metadata, to place once in the beginning of the file
    - <SOURCE_REPO_URL>, version <COMMIT_SHA_OR_TAG>
-   - Reviewed: <YYYY-MM-DD> Daniil Sarkisyan
+   - Reviewed: <Year-Month-Date> Daniil Sarkisyan
 2) For each skill output:
    - name
    - overview
