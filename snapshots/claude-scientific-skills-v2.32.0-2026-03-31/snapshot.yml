@@ -1,0 +1,16 @@
+snapshot_id: claude-scientific-skills-v2.32.0-2026-03-31
+layout_version: 2
+status: unreviewed
+source_type: github_archive_url
+source_url: https://github.com/K-Dense-AI/claude-scientific-skills/archive/refs/tags/v2.32.0.zip
+source_slug: K-Dense-AI/claude-scientific-skills
+requested_ref: v2.32.0
+resolved_commit_sha: b58ad7e874f6b8045114f70837a2cd50e0ede5b6
+archive_url: https://github.com/K-Dense-AI/claude-scientific-skills/archive/refs/tags/v2.32.0.zip
+archive_sha256: 8f464dce83f1541fba26165ce90efd5ae7d78fb9d5b5da1456e1dce85e662422
+prepared_at_utc: 2026-03-31T13:40:49Z
+prepared_by: ai2
+review_root: review
+hydrated_root: hydrated
+omitted_lfs_manifest: omitted-lfs.yml
+notes: 

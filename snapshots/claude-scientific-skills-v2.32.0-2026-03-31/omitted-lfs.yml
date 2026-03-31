@@ -1,0 +1,32 @@
+count: 5
+paths:
+  - path: docs/k-dense-web.gif
+    oid: sha256:1249b5f108bc60237ff07add631f5887108445380e1ce25f9d8641c7d36515e6
+    size_bytes: 23042128
+    hydration_status: hydrated
+    exclusion_source: upstream_filter_lfs
+    reason: excluded_from_review_push
+  - path: scientific-skills/timesfm-forecasting/examples/anomaly-detection/output/anomaly_detection.png
+    oid: sha256:c4b30e01bb01847c0eabf8367f28cd16368fd28e450c38c1cc089abb18672276
+    size_bytes: 217028
+    hydration_status: hydrated
+    exclusion_source: upstream_filter_lfs
+    reason: excluded_from_review_push
+  - path: scientific-skills/timesfm-forecasting/examples/covariates-forecasting/output/covariates_data.png
+    oid: sha256:24682a190ecae753d5531bce9841040709a64abb044bfb372bab34a6c7c17070
+    size_bytes: 458505
+    hydration_status: hydrated
+    exclusion_source: upstream_filter_lfs
+    reason: excluded_from_review_push
+  - path: scientific-skills/timesfm-forecasting/examples/global-temperature/output/forecast_animation.gif
+    oid: sha256:ca9bbbe3206a0c2c7da26e154a6a5661490f97a024ccb7a833f26fd96bd0e51b
+    size_bytes: 794231
+    hydration_status: hydrated
+    exclusion_source: upstream_filter_lfs
+    reason: excluded_from_review_push
+  - path: scientific-skills/timesfm-forecasting/examples/global-temperature/output/forecast_visualization.png
+    oid: sha256:d4b03c857b444842550fb711ee9951f0e5f159d52bbedebe4e8bbfe2d18bc2f5
+    size_bytes: 156559
+    hydration_status: hydrated
+    exclusion_source: upstream_filter_lfs
+    reason: excluded_from_review_push
