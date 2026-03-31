@@ -1,0 +1,16 @@
+snapshot_id: bioskills-main-2026-03-31
+layout_version: 2
+status: unreviewed
+source_type: github_repo
+source_url: https://github.com/GPTomics/bioSkills
+source_slug: GPTomics/bioSkills
+requested_ref: main
+resolved_commit_sha: 89b75eb0a4e7907bc81d1e4bd1787780dbb8540e
+archive_url: https://github.com/GPTomics/bioSkills/archive/89b75eb0a4e7907bc81d1e4bd1787780dbb8540e.tar.gz
+archive_sha256: d0b700b8a5ccc58875061b272bd35e51536e4738615bb27e035d6da381e775c4
+prepared_at_utc: 2026-03-31T13:50:58Z
+prepared_by: ai2
+review_root: review
+hydrated_root: hydrated
+omitted_lfs_manifest: omitted-lfs.yml
+notes: 

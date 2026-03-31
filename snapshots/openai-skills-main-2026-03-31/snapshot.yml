@@ -1,0 +1,16 @@
+snapshot_id: openai-skills-main-2026-03-31
+layout_version: 2
+status: unreviewed
+source_type: github_repo
+source_url: https://github.com/openai/skills
+source_slug: openai/skills
+requested_ref: main
+resolved_commit_sha: 736f600bf6ecbc000c04f1d2710b990899f28903
+archive_url: https://github.com/openai/skills/archive/736f600bf6ecbc000c04f1d2710b990899f28903.tar.gz
+archive_sha256: e075bf21f71d4207fa16f6bc84131b44f7c9068dbc62162e2d146e31fb7e3d01
+prepared_at_utc: 2026-03-31T13:50:54Z
+prepared_by: ai2
+review_root: review
+hydrated_root: hydrated
+omitted_lfs_manifest: omitted-lfs.yml
+notes: 
