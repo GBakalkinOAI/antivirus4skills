@@ -284,11 +284,37 @@ copy_tree_without_metadata() {
   done < <(find "$dest_dir" -name .gitattributes -type f | sort)
 }
 
+is_lfs_pointer_file() {
+  local file_path="$1"
+
+  [[ -f "$file_path" ]] || return 1
+  head -n 1 "$file_path" | grep -Fqx 'version https://git-lfs.github.com/spec/v1'
+}
+
+lookup_pointer_oid() {
+  local rel_path="$1"
+  local oid=""
+
+  oid="$(awk -v path="$rel_path" '$0 ~ (" " path "$") {print $1; exit}' "$TMP_ROOT/lfs-long.txt")"
+  if [[ -n "$oid" ]]; then
+    printf 'sha256:%s' "$oid"
+    return 0
+  fi
+
+  if is_lfs_pointer_file "$HYDRATED_DIR/$rel_path"; then
+    sed -n 's/^oid //p' "$HYDRATED_DIR/$rel_path" | head -n1
+    return 0
+  fi
+
+  printf ''
+}
+
 build_omitted_manifest() {
   local manifest_path="$1"
   local count
 
-  count="$(wc -l < "$TMP_ROOT/excluded-paths.txt" | awk '{print $1}')"
+  sort -u "$TMP_ROOT/excluded-paths.txt" "$TMP_ROOT/pointer-detected-paths.txt" > "$TMP_ROOT/all-omitted-paths.txt"
+  count="$(wc -l < "$TMP_ROOT/all-omitted-paths.txt" | awk '{print $1}')"
   {
     printf 'count: %s\n' "$count"
     if [[ "$count" -eq 0 ]]; then
@@ -296,22 +322,26 @@ build_omitted_manifest() {
     else
       printf 'paths:\n'
       while IFS= read -r rel_path; do
-        oid="$(awk -v path="$rel_path" '$0 ~ (" " path "$") {print $1; exit}' "$TMP_ROOT/lfs-long.txt")"
+        oid="$(lookup_pointer_oid "$rel_path")"
         size_bytes=""
         hydration_status="hydrated"
+        exclusion_source="upstream_filter_lfs"
         if [[ -f "$HYDRATED_DIR/$rel_path" ]]; then
           size_bytes="$(wc -c < "$HYDRATED_DIR/$rel_path" | awk '{print $1}')"
         fi
-        if grep -Fqx "$rel_path" "$TMP_ROOT/unresolved-lfs.txt"; then
+        if grep -Fqx "$rel_path" "$TMP_ROOT/pointer-detected-paths.txt"; then
+          exclusion_source="detected_pointer_blob"
+        fi
+        if grep -Fqx "$rel_path" "$TMP_ROOT/unresolved-lfs.txt" || is_lfs_pointer_file "$HYDRATED_DIR/$rel_path"; then
           hydration_status="pointer_only"
         fi
         printf '  - path: %s\n' "$rel_path"
-        printf '    oid: %s\n' "${oid:+sha256:$oid}"
+        printf '    oid: %s\n' "${oid:-}"
         printf '    size_bytes: %s\n' "${size_bytes:-unknown}"
         printf '    hydration_status: %s\n' "$hydration_status"
-        printf '    exclusion_source: upstream_filter_lfs\n'
+        printf '    exclusion_source: %s\n' "$exclusion_source"
         printf '    reason: excluded_from_review_push\n'
-      done < "$TMP_ROOT/excluded-paths.txt"
+      done < "$TMP_ROOT/all-omitted-paths.txt"
     fi
   } > "$manifest_path"
 }
@@ -326,9 +356,18 @@ prepare_layout() {
   copy_tree_without_metadata "$CLONE_DIR" "$HYDRATED_DIR"
   copy_tree_without_metadata "$HYDRATED_DIR" "$REVIEW_DIR"
 
+  : > "$TMP_ROOT/pointer-detected-paths.txt"
   while IFS= read -r rel_path; do
     rm -f "$REVIEW_DIR/$rel_path"
   done < "$TMP_ROOT/excluded-paths.txt"
+
+  while IFS= read -r review_file; do
+    rel_path="${review_file#$REVIEW_DIR/}"
+    if is_lfs_pointer_file "$review_file"; then
+      printf '%s\n' "$rel_path" >> "$TMP_ROOT/pointer-detected-paths.txt"
+      rm -f "$review_file"
+    fi
+  done < <(find "$REVIEW_DIR" -type f | sort)
 
   build_omitted_manifest "$OMITTED_MANIFEST"
 }

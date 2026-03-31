@@ -1,0 +1,16 @@
+snapshot_id: openclaw-medical-skills-main-2026-03-31
+layout_version: 2
+status: unreviewed
+source_type: github_repo
+source_url: https://github.com/FreedomIntelligence/OpenClaw-Medical-Skills
+source_slug: FreedomIntelligence/OpenClaw-Medical-Skills
+requested_ref: main
+resolved_commit_sha: 2aa60d4d86d3a028358f4505684a24efe745a8ea
+archive_url: https://github.com/FreedomIntelligence/OpenClaw-Medical-Skills/archive/2aa60d4d86d3a028358f4505684a24efe745a8ea.tar.gz
+archive_sha256: 2e22822135008ab96eddb0e37520013517e1c30ff8ea9d4c38d7e328e0bb1c7d
+prepared_at_utc: 2026-03-31T14:11:48Z
+prepared_by: ai2
+review_root: review
+hydrated_root: hydrated
+omitted_lfs_manifest: omitted-lfs.yml
+notes: unresolved_lfs_paths=124

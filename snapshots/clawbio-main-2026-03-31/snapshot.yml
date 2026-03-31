@@ -1,0 +1,16 @@
+snapshot_id: clawbio-main-2026-03-31
+layout_version: 2
+status: unreviewed
+source_type: github_repo
+source_url: https://github.com/ClawBio/ClawBio
+source_slug: ClawBio/ClawBio
+requested_ref: main
+resolved_commit_sha: ce5be4144f7d3433592fa4872db5ffc9498bdab1
+archive_url: https://github.com/ClawBio/ClawBio/archive/ce5be4144f7d3433592fa4872db5ffc9498bdab1.tar.gz
+archive_sha256: 4b6f1356eb36a0123fe5d8f8744c086f94946dab084ea6aca8c375110322353a
+prepared_at_utc: 2026-03-31T14:00:26Z
+prepared_by: ai2
+review_root: review
+hydrated_root: hydrated
+omitted_lfs_manifest: omitted-lfs.yml
+notes: 
