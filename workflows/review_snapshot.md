@@ -1,26 +1,26 @@
-# REVIEW_WORKFLOW
+# REVIEW_SNAPSHOT
 
 Purpose: define a reusable, human-auditable, **max paranoia** workflow for reviewing external skill/plugin repositories before local use.
 
+Snapshots are prepared separately before review. For snapshot preparation rules, provenance, and extraction policy, see [`workflows/prepare_snapshot.md`](workflows/prepare_snapshot.md).
+
 ## Scope and guardrails
-- Review one external repository at a time.
+- Review one external repository at a time from a prepared local snapshot, not a live mutable upstream checkout.
 - Static-analysis mode only (read/analyze; no execution of untrusted code).
 - Do not trust prior pass status without re-checking pinned version metadata.
 - Produce human-readable Markdown artifacts only.
 - Codex is evidence-only: it must not pre-fill, draft, suggest, or infer final Pass/Maybe/Fail decisions.
 
 ## Required review inputs
-- Reviewed repo (fork or source under review).
-- Source repo (upstream/original if different).
-- Version pin target (commit SHA preferred, tag allowed if resolved to SHA).
+- Prepared snapshot directory under `snapshots/`.
 - Reviewer name/identifier.
 - Review date (UTC).
 
 ## Workflow steps
 1. **Intake and pin target**
-   - Record repo URL and owner/repo slug.
-   - Record intended pin (commit SHA or tag+resolved SHA).
-   - Record why this repo is being reviewed.
+   - Read `snapshot.yml` for repo URL, owner/repo slug, intended pin, and resolved SHA.
+   - Confirm that the snapshot contains `review/` and use that as the review input tree.
+   - Record that this repo is being reviewed.
 
 2. **Baseline context check**
    - Identify repository structure and where skills/plugins live.
@@ -37,44 +37,21 @@ Purpose: define a reusable, human-auditable, **max paranoia** workflow for revie
    - For each finding, capture exact path and snippet.
    - Assign severity and confidence.
    - Explain why it may be risky and what manual verification is needed.
+   - Reuse `SUSPICIOUS_PATTERNS.md` categories
 
 5. **Human-only decision gate**
-   - Codex outputs findings/evidence and leaves decision fields blank or `undecided`.
-   - Human reviewer alone assigns final Pass / Maybe / Fail after manual verification.
+   - Codex outputs findings/evidence in a single `report.md` file and leaves decision fields as `undecided`.
+   - Human reviewer alone assigns final `pass` / `maybe` / `fail` after manual verification.
    - Human reviewer may add final rationale and required follow-up actions.
 
 6. **Manifest creation (only if safe enough to overview)**
-   - If decision is Pass (or explicitly approved Maybe), create a reviewed-repo manifest from template.
-   - Group skills by what they do and add keyword tags.
+   - If decision is `pass`, create a reviewed-repo `safe-manifest.md` from human-curated `report.md`.
+   - Group skills by what they do, add keyword tags and show overview.
+   - Manifest intend to give human user an overview of all safe skills in the repo, so user can include them in future Codex projects.
 
-7. **Index update**
-   - Add the reviewed repo/version to one top-level index:
-     - `skill-index.md` for Pass
-     - `skill-index-maybe.md` for Maybe
-     - `skill-index-failed.md` for Fail
-   - Include links to findings report and manifest (if any).
-   - Do not add Pass/Maybe/Fail entries until a human decision exists.
-
-## Version pinning requirements (mandatory)
-Every review artifact must include:
-- Reviewed repo URL and owner/repo.
-- Source repo URL and owner/repo (if applicable).
-- Pin type: commit SHA (preferred) or tag.
-- Exact commit SHA reviewed.
-- Reviewed date (UTC).
-- Reviewer.
-
-Rules:
-- Treat branch names as unpinned/mutable (insufficient).
-- If only a tag is available, resolve and store the commit SHA that tag pointed to during review.
-- A decision applies **only** to that pinned version.
-
-## Reuse of prior decisions and catches
-Before finalizing any new review:
-- Check prior findings reports for same repo and related repos/authors.
-- Reuse `SUSPICIOUS_PATTERNS.md` categories and add newly observed patterns.
-- Note whether each suspicious pattern is recurring, new, or regressed.
-- If a previously failed pattern reappears, bias toward Maybe/Fail until resolved.
+7. **Distillation of decisions and catches**
+   - Consider only findings where human reviewer assigned `pass` or `fail`
+   - Are there newly observed patterns for `SUSPICIOUS_PATTERNS.md`? If eyes, show diffs implementing them, ask user for approval, add if approved.
 
 ## Decision policy
 - Final decision ownership: **human reviewer only**.
@@ -82,13 +59,7 @@ Before finalizing any new review:
 - **Maybe**: unresolved or ambiguous findings requiring human/manual validation.
 - **Fail**: confirmed high-risk behavior, policy violations, or unacceptable unresolved critical risk.
 
-## Naming conventions for reviewed artifacts
-For future per-review artifacts, use sortable names:
-- Findings report:
-  - `reports/YYYY-MM-DD__owner-repo__pin-<shortsha-or-tag>__findings.md`
-- Reviewed manifest:
-  - `manifests/YYYY-MM-DD__owner-repo__pin-<shortsha-or-tag>__manifest.md`
-
 Notes:
 - Keep names lowercase, hyphenated, and stable.
 - Do not create repo-specific directories unless later explicitly requested.
+- Do not read from `hydrated/` unless the workflow is explicitly being debugged locally; Codex Cloud review should use `review/` only.

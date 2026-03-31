@@ -1,19 +1,34 @@
-You are reviewing one external skills/plugins repository in **max paranoia** mode.
+You are reviewing one prepared local snapshot of an external skills/plugins repository in **max paranoia** mode.
 
-Scope:
-- This is fork of repo: SOURCE_REPO_URL = 
-- Version to review: COMMIT_SHA_OR_TAG = 
-- If user forgot to fill is scope, complain and stop.
+Read these workflow docs first:
+- `workflows/prepare_snapshot.md`
+- `workflows/review_snapshot.md`
+
+Snapshot to review:
+- `PASTE_SNAPSHOT_PATH_HERE`
+
+Required preflight:
+- Read `snapshot.yml` in that snapshot directory first.
+- Use the recorded provenance as the review metadata source of truth.
+- Review only the prepared source under `review/`.
+- Do not modify `review/`.
+- If `PASTE_SNAPSHOT_PATH_HERE` is missing, invalid, or does not contain both `snapshot.yml` and `review/`, complain and stop.
 
 Hard constraints:
 - Static analysis only; do not execute untrusted code.
 - Do not propose automated execution pipelines.
-- Produce exactly two Markdown output files: `<SOURCE_REPO>-codex-issues.md` and `<SOURCE_REPO>-codex-overview.md`.
+- Produce exactly one Markdown output file inside the snapshot directory: `review.md`.
 - Do not pre-fill or infer Pass/Maybe/Fail; leave final decision as human-only `undecided` placeholder.
+- Do not edit `snapshot.yml`.
+- Do not create or modify `curated/` in this step.
 
-Required outputs in `<SOURCE_REPO>-codex-issues.md`:
+Required outputs in `review.md`:
 1) Review metadata, to place once in the beginning of the file
-   - <SOURCE_REPO_URL>, version <COMMIT_SHA_OR_TAG>
+   - snapshot path
+   - source URL
+   - source slug
+   - requested ref
+   - exact commit SHA reviewed
    - Reviewed: <Year-Month-Date> Daniil Sarkisyan
 2) For each suspicious finding output:
    - exact file path
@@ -25,16 +40,7 @@ Required outputs in `<SOURCE_REPO>-codex-issues.md`:
    - decision: undecided (Human-only placeholder, no Codex inference)
    - verification notes (empty placeholder, no Codex inference)
 
-Required outputs in `<SOURCE_REPO>-codex-overview.md`:
-1) Review metadata, to place once in the beginning of the file
-   - <SOURCE_REPO_URL>, version <COMMIT_SHA_OR_TAG>
-   - Reviewed: <Year-Month-Date> Daniil Sarkisyan
-2) For each skill output:
-   - name
-   - overview
-   - list of tags/keywords
-3) Group skills into sections according to the tasks they solve.
-
 Method guidance:
 - Be conservative; include ambiguous items as findings for manual review.
 - Avoid false positives for ordinary use of well-curated standard tools/packages; flag only suspicious invocation context.
+- Keep `review.md` separate from `review/`.

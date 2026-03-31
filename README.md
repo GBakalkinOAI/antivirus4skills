@@ -6,13 +6,14 @@ I instruct Codex Cloud to
 - remember what I checked "Pass" so next time I do not have to re-check the same or highly similar issue
 - for each repo make a single manifest overviewing all skills that "Pass", grouping skills into sections by what they do and tagging them for quick keyword search - one place to preselect safe/good skills for my other Codex projects
 
-# Simplified workflow (see `REVIEW_WORKFLOW.md` for details)
-- Fork skills repo so Codex's GitHub connector will use it (and reliably freeze the repo's version, so no silent updates could slip unreviewed).
-- Run Codex Cloud in forked repo by pasting the self-contained prompt from `templates/prompt-review-repo.md` 
-- Codex generates `<SOURCE_REPO>-codex-issues.md`, the single file aggregating all suspicious issues from all skills of that repo plus flags other problems, like installation scripts doing something unexpected.
-- Copy generated files to this repo, run Codex Cloud with `templates/prompt-guess-similar.md` to pre-fill decisions for the same or highly similar issues we met before in old versions of this repo or in other repos.
-- Manually curate remaining issues and sanity-check Codex's pre-filled decisions.
-- Run Codex Cloud on manually curated issues to get three more files: overview of all safe skills in this repo, overview of unresolved issues, clearly malicious/dangerous stuff with human readable explanations to notify the original skill repo's maintainer.
+# Simplified workflow
+1. Prepare an immutable local snapshot from a GitHub repo URL or release archive URL. See [`workflows/prepare_snapshot.md`](workflows/prepare_snapshot.md).
+  - The helper records provenance in `snapshots/<snapshot-id>/snapshot.yml`, stores the full local hydrated tree in `snapshots/<snapshot-id>/hydrated/`, and creates a push-safe review subset in `snapshots/<snapshot-id>/review/`.
+2. Run no-network Codex Cloud review against that prepared snapshot (see [`workflows/review_snapshot.md`](workflows/review_snapshot.md)).
+  - Keep review artifacts separate from `review/`, prepared snapshot is immutable.
+  - Codex generates a single human-readable review `report.md` file of suspicious issues without executing untrusted code, then stops to let human curate `report.md`.
+  - Curate safe issues as `pass` and Codex will generate manifest briefly describing all safe skills and learn to treat similar issues as safe.
+  - Curate dangerous/malicious issues as `fail` and Codex will generate human-readable bug report for each issue for the repo's maintaniter attention.
 
 # Repos to be reviewed...
 
